@@ -81,9 +81,9 @@ Accuracy:
 
 # 📸 Application Screenshots
 
-## Home Page
+## Home
 
-![Homepage](screenshots/home.png)
+![Home](screenshots/Home.png)
 
 ---
 
