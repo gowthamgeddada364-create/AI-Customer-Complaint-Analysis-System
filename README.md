@@ -111,11 +111,6 @@ Accuracy:
 
 ---
 
-## Low Confidence Detection
-
-![Low Confidence](screenshots/low_confidence.png)
-
----
 
 ## Future Improvements
 
