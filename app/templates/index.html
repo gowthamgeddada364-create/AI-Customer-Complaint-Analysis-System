@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Customer Complaint Analysis System</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+<div class="container py-5">
+
+    <!-- Header -->
+    <div class="text-center mb-5">
+
+        <i class="bi bi-robot display-1 text-primary mb-3"></i>
+
+        <h1 class="display-4 fw-bold">
+            AI Customer Complaint Analysis System
+        </h1>
+
+        <p class="lead">
+            Powered by Machine Learning • NLP • Flask • spaCy
+        </p>
+
+    </div>
+
+    <!-- Input Card -->
+    <div class="card shadow-lg border-0">
+
+        <div class="card-body p-4">
+
+            <!-- Validation Error -->
+
+            {% if error %}
+
+            <div class="alert alert-danger shadow">
+
+                <i class="bi bi-exclamation-triangle-fill"></i>
+
+                {{ error }}
+
+            </div>
+
+            {% endif %}
+
+            <!-- Low Confidence -->
+
+            {% if error_title %}
+
+            <div class="alert alert-warning shadow">
+
+                <h4>
+                    ⚠️ {{ error_title }}
+                </h4>
+
+                <hr>
+
+                <p>
+
+                    <strong>Reason:</strong><br>
+
+                    {{ error_reason }}
+
+                </p>
+
+                <p>
+
+                    <strong>Please enter a complaint related to:</strong>
+
+                </p>
+
+                <ul>
+
+                    {% for item in suggestions %}
+
+                    <li>✔ {{ item }}</li>
+
+                    {% endfor %}
+
+                </ul>
+
+                <hr>
+
+                <strong>Example Complaints</strong>
+
+                <ul>
+
+                    <li>My credit card was charged twice.</li>
+
+                    <li>I cannot access my bank account.</li>
+
+                    <li>My mortgage payment is incorrect.</li>
+
+                    <li>My student loan balance is wrong.</li>
+
+                </ul>
+
+            </div>
+
+            {% endif %}
+
+            <form action="/predict" method="POST">
+
+                <label class="form-label fw-bold fs-5">
+
+                    <i class="bi bi-chat-left-text-fill text-primary"></i>
+
+                    Customer Complaint
+
+                </label>
+
+                <small class="text-muted d-block mb-2">
+
+                    Enter a detailed financial complaint for accurate AI analysis.
+
+                </small>
+
+                <textarea
+                    class="form-control"
+                    rows="10"
+                    name="complaint"
+                    placeholder="Example: My Chase credit card was charged $500 without my authorization on January 15."
+                    required>{{ complaint if complaint else "" }}</textarea>
+
+                <button class="btn btn-primary btn-lg w-100 mt-4">
+
+                    <i class="bi bi-cpu"></i>
+
+                    Analyze Complaint
+
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+   {% if prediction %}
+
+<!-- Prediction Card -->
+<div class="card shadow-lg border-0 mt-4">
+
+    <div class="card-body">
+
+        <h3 class="text-primary">
+
+            <i class="bi bi-bar-chart-fill"></i>
+
+            Prediction Result
+
+        </h3>
+
+        <hr>
+
+        <div class="row text-center mt-4">
+
+            <div class="col-md-6 mb-3">
+
+                <div class="p-3 rounded bg-primary text-white shadow-sm">
+
+                    <h6>Predicted Category</h6>
+
+                    <h5 class="fw-bold">
+
+                        {{ prediction }}
+
+                    </h5>
+
+                </div>
+
+            </div>
+
+            <div class="col-md-6 mb-3">
+
+                <div class="p-3 rounded bg-success text-white shadow-sm">
+
+                    <h6>Confidence</h6>
+
+                    <h4 class="fw-bold">
+
+                        {{ confidence }}%
+
+                    </h4>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="progress mt-3" style="height:25px;">
+
+            <div
+                class="progress-bar progress-bar-striped progress-bar-animated"
+                role="progressbar"
+                style="width: {{ confidence }}%;">
+
+            </div>
+
+        </div>
+
+        <hr>
+
+        <h4 class="mt-4 text-primary">
+
+            <i class="bi bi-trophy-fill"></i>
+
+            Top 3 Predictions
+
+        </h4>
+
+        <ul class="list-group">
+
+            {% for category, score in top3 %}
+
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+
+                {{ category }}
+
+                <span class="badge bg-success rounded-pill">
+
+                    {{ score }}%
+
+                </span>
+
+            </li>
+
+            {% endfor %}
+
+        </ul>
+
+    </div>
+
+</div>
+
+<!-- Named Entity Recognition -->
+
+{% if entities %}
+
+<div class="card shadow-lg border-0 mt-4">
+
+    <div class="card-body">
+
+        <h3 class="text-warning">
+
+            <i class="bi bi-tags-fill"></i>
+
+            Named Entities
+
+        </h3>
+
+        <hr>
+
+        <table class="table table-hover">
+
+            <thead class="table-primary">
+
+                <tr>
+
+                    <th>Entity</th>
+
+                    <th>Type</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                {% for entity, label in entities %}
+
+                <tr>
+
+                    <td>{{ entity }}</td>
+
+                    <td>{{ label }}</td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+{% endif %}
+
+{% if reply %}
+
+<!-- AI Support Reply -->
+
+<div class="card shadow-lg border-0 mt-4">
+
+    <div class="card-body">
+
+        <h3 class="text-success">
+
+            <i class="bi bi-chat-square-dots-fill"></i>
+
+            AI Support Reply
+
+        </h3>
+
+        <hr>
+
+        <div class="alert alert-success">
+
+            <pre style="white-space: pre-wrap; font-family: inherit;">{{ reply }}</pre>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endif %}
+
+{% endif %}
+
+</div>
+
+<footer class="text-center mt-5 py-3 border-top">
+
+    <p class="mb-1">
+
+        <strong>🤖 Customer Complaint Analysis System</strong>
+
+    </p>
+
+    <p class="text-muted mb-0">
+
+        Developed by <strong>Gowtham</strong> |
+        Powered by Python, Flask, Machine Learning, NLP & spaCy
+
+    </p>
+
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+
+</body>
+
+</html>

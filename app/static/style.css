@@ -1,0 +1,107 @@
+/* Google Font */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+body{
+    font-family:'Poppins',sans-serif;
+    background:#f5f7fb;
+    color:#1f2937;
+}
+
+/* Header */
+h1{
+    color:#2563eb;
+    font-weight:700;
+}
+
+.lead{
+    color:#6b7280;
+}
+
+/* Cards */
+.card{
+    border:none;
+    border-radius:18px;
+    box-shadow:0 10px 30px rgba(0,0,0,.08);
+    transition:.3s;
+}
+
+.card:hover{
+    transform:translateY(-4px);
+    box-shadow:0 18px 40px rgba(37,99,235,.15);
+}
+
+/* Textarea */
+textarea{
+    resize:none;
+    border-radius:12px!important;
+    padding:15px!important;
+    font-size:16px;
+}
+
+textarea:focus{
+    border-color:#2563eb!important;
+    box-shadow:0 0 0 .2rem rgba(37,99,235,.15)!important;
+}
+
+/* Button */
+.btn-primary{
+    background:#2563eb;
+    border:none;
+    border-radius:12px;
+    padding:14px;
+    font-weight:600;
+    transition:.3s;
+}
+
+.btn-primary:hover{
+    background:#1d4ed8;
+    transform:scale(1.02);
+}
+
+/* Progress Bar */
+.progress{
+    height:25px!important;
+    border-radius:20px;
+    background:#e5e7eb;
+}
+
+.progress-bar{
+    font-weight:600;
+}
+
+/* List Group */
+.list-group-item{
+    border:none;
+    border-bottom:1px solid #eef2f7;
+}
+
+/* Table */
+.table{
+    border-radius:12px;
+    overflow:hidden;
+}
+
+/* AI Reply */
+pre{
+    white-space:pre-wrap;
+    font-family:'Poppins',sans-serif;
+    font-size:15px;
+}
+
+/* Alert */
+.alert{
+    border-radius:15px;
+}
+
+/* Badge */
+.badge{
+    font-size:14px;
+}
+
+/* Smooth Animation */
+.card,
+.btn,
+.progress,
+textarea{
+    transition:.3s ease;
+}
