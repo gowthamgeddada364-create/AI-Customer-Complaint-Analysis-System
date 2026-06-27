@@ -11,8 +11,13 @@ from src.auto_reply import generate_reply
 app = Flask(__name__)
 
 # Load trained model and vectorizer
-model = joblib.load("models/trained/classifier.pkl")
-vectorizer = joblib.load("models/trained/vectorizer.pkl")
+BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+
+MODEL_PATH = os.path.join(BASE_DIR, "models", "trained", "classifier.pkl")
+VECTORIZER_PATH = os.path.join(BASE_DIR, "models", "trained", "vectorizer.pkl")
+
+model = joblib.load(MODEL_PATH)
+vectorizer = joblib.load(VECTORIZER_PATH)
 
 
 # Home Page
