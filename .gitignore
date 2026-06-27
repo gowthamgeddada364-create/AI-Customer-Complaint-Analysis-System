@@ -6,6 +6,7 @@ venv/
 # Python Cache
 __pycache__/
 *.pyc
+.vscode/
 
 # Large datasets
 data/raw/rows.csv
